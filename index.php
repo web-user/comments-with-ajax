@@ -1,12 +1,21 @@
 ﻿<?php
+/**
+ * The template for displaying all comments
+ *
+ * @package Web-user
+ * @since Comments with Ajax 1.0
+ */
 
-// Сообщение об ошибке:
+// Error message:
 error_reporting(E_ALL^E_NOTICE);
 
 include "connect.php";
 include "comment.class.php";
 
 
+/*
+/ Select all the comments and to fill an array of objects of $comments
+*/
 
 $comments = array();
 $result = mysql_query("SELECT * FROM comments ORDER BY id ASC");
@@ -63,46 +72,23 @@ while($row = mysql_fetch_assoc($result))
         }); 
 </script>
 
-<style>
-
-body
-{
-font-family:arial;
-}
-
-#preview
-{
-color:#cc0000;
-font-size:12px
-}
-.imgList 
-{
-max-height:150px;
-margin-left:5px;
-border:1px solid #dedede;
-padding:4px;    
-float:left; 
-}
-
-</style>
-
 
 <div class="container">
  <div class="jumbotron">
-         <h1>Ajax comment</h1>
+         <h1>Comments using AJAX</h1>
        </div>
 
        <div id="addCommentContainer" class="col-md-6 col-md-offset-3">
-           <p>Добавить комментарий</p>
+           <p>Add a comment</p>
            <form id="imageform" method="post" enctype="multipart/form-data" action='ajaxImageUpload.php'>
                <div>
-                   <label for="name">ФИО</label>
+                   <label for="name">Name</label>
                    <input type="text" class="form-control" name="name" id="name" />
                    
                    <label for="email">Email</label>
                    <input type="text" class="form-control" name="email" id="email" />
                    
-                   <label for="url">Tелефон</label>
+                   <label for="url">Phone</label>
                    <input type="text" class="form-control" name="phone" id="phone" />
 
 
@@ -121,28 +107,20 @@ float:left;
            </form>
        </div>
     <div id="main" class="col-md-6 col-md-offset-3">
+	    <div id="newcoment">
+	    </div>
+		<div id="main">
+		<?php
+		/*
+		/ Conclusion comments one by one:
+		*/
+		    foreach($comments as $c){
+		    	echo $c->markup();
+		    }
+		?>
+	    </div>
 
-    <div id="newcoment">
-        
-    </div>
-
-
-    <?php
-
-    /*
-    /	Вывод комментариев один за другим:
-    */
-
-    foreach($comments as $c){
-    	echo $c->markup();
-    }
-
-    ?>
-
-
-    </div>
-
-</div>
+	</div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
